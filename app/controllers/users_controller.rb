@@ -12,6 +12,11 @@ class UsersController < ApplicationController
     end
 
     def create
+        thumb_upload = params[:user][:thumbnail]
+        if !thumb_upload.nil?
+            params[:user][:thumbnail] = thumb_upload.original_filename
+        end
+
         @user = User.new(user_params)
         if @user.save
             redirect_to @user
@@ -25,6 +30,11 @@ class UsersController < ApplicationController
     end
 
     def update
+        thumb_upload = params[:user][:thumbnail]
+        if !thumb_upload.nil?
+            params[:user][:thumbnail] = thumb_upload.original_filename
+        end
+
         @user = User.find(params[:id])
         if @user.update(user_params)
             redirect_to @user

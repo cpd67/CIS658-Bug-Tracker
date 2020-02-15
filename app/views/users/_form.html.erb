@@ -1,6 +1,6 @@
 <%= form_with model: @user, local: true do |form| %>
     <% if @user.errors.any? %>
-        <div id="error_explanation">
+        <div id="error_explanation" class="alert alert-danger">
             <h2>
                 <%= pluralize(@user.errors.count, "error") %> prohibited this article from being saved:
             </h2>
@@ -12,23 +12,24 @@
         </div>
     <% end %>
     
-    <p>
+    <div class="form-group">
         <%= form.label :fname, "First Name" %><br>
-        <%= form.text_field :fname %>
-    </p>
-    <p>
+        <%= form.text_field :fname, class: "form-control" %>
+    </div>
+    <div class="form-group">
         <%= form.label :lname, "Last Name" %><br>
-        <%= form.text_field :lname %>
-    </p>
-    <p>
+        <%= form.text_field :lname, class: "form-control" %>
+    </div>
+    <div class="form-group">
         <%= form.label :email %><br>
-        <%= form.text_field :email %>
-    </p>
-    <p>
+        <%= form.text_field :email, class: "form-control" %>
+    </div>
+    <div class="form-group">
         <%= form.label :thumbnail %><br>
-        <%= form.text_field :thumbnail %>
-    </p>
-    <p>
-        <%= form.submit %>
-    </p>
+        <%= form.file_field :thumbnail, class: "form-control-file" %>
+    </div>
+    <div class="actions">
+        <%= form.submit class: "btn btn-primary" %>
+        <%= link_to 'Cancel', users_path, class: "btn btn-danger" %>
+    </div>
 <% end %>
