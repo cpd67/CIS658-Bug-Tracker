@@ -1,21 +1,18 @@
-<p>
-    <strong>Title: </strong> <%= @bug.title %>    
-</p>
-<p>
-    <strong>User: </strong> <%= @bug.user ? @bug.user.fname + " " + @bug.user.lname : "-" %>
-</p>
-<p>
-    <strong>Description: </strong> <%= @bug.description %>
-</p>
-<p>
-    <strong>Issue type: </strong> <%= @bug.issue_type %>
-</p>
-<p>
-    <strong>Priority: </strong> <%= @bug.priority %>
-</p>
-<p>
-    <strong>Status: </strong> <%= @bug.status %>
-</p>
-
-<%= link_to 'Edit', edit_bug_path(@bug) %> | 
-<%= link_to 'Back', bugs_path %>
+<div class="card">
+    <h5 class="card-header"><%= @bug.title %></h5>
+    <div class="card-body">
+        <p class="card-text">
+            <%= @bug.description %>
+        </p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Assigned user: <%= @bug.user ? @bug.user.fname + " " + @bug.user.lname : "-" %></li>
+        <li class="list-group-item">Issue type: <%= @bug.issue_type %></li>
+        <li class="list-group-item">Priority: <%= @bug.priority %></li>
+        <li class="list-group-item">Status: <%= @bug.status %></li>
+    </ul>
+    <div class="card-body">
+        <%= link_to 'Edit', edit_bug_path(@bug), class: "card-link" %>
+        <%= link_to 'Back', bugs_path, class: "card-link" %>
+    </div>
+</div>
