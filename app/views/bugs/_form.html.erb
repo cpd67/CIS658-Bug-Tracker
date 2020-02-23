@@ -1,4 +1,6 @@
-<%= form_with model: @bug, local: true do |form| %>
+<%= form_with id: "bugForm", model: @bug, local: true do |form| %>
+    <div id="errorMessages"></div>
+
     <% if @bug.errors.any? %>
         <div id="error_explanation" class="alert alert-danger">
             <h2>
@@ -43,7 +45,7 @@
     </div>
 
     <div class="actions">
-        <%= form.submit class: "btn btn-primary" %>
+        <%= form.submit class: "btn btn-primary", data: {disable_with: false} %>
         <%= link_to 'Cancel', bugs_path, class: "btn btn-danger" %>
     </div>
 <% end %>
