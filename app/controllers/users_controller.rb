@@ -1,57 +1,36 @@
 class UsersController < ApplicationController
+    before_action :set_user, only: [:show, :update, :destroy]
+
     def index
         @users = User.all
-    end
-
-    def show
-        @user = User.find(params[:id])
-    end
-
-    def new
-        @user = User.new
+        json_response(@users)
     end
 
     def create
-        thumb_upload = params[:user][:thumbnail]
-        if !thumb_upload.nil?
-            params[:user][:thumbnail] = thumb_upload.original_filename
-        end
-
-        @user = User.new(user_params)
-        if @user.save
-            redirect_to @user
-        else
-            render 'new'
-        end
+        @user = User.create!(user_params)
+        json_response(@user, :created)
     end
 
-    def edit
-        @user = User.find(params[:id])
+    def show
+        json_response(@user)
     end
 
     def update
-        thumb_upload = params[:user][:thumbnail]
-        if !thumb_upload.nil?
-            params[:user][:thumbnail] = thumb_upload.original_filename
-        end
-
-        @user = User.find(params[:id])
-        if @user.update(user_params)
-            redirect_to @user
-        else
-            render 'edit'
-        end
+        @user.update(user_params)
+        head :no_content
     end
 
     def destroy
-        @user = User.find(params[:id])
         @user.destroy
-
-        redirect_to users_path
+        head :no_content
     end
 
     private
         def user_params
-            params.require(:user).permit(:fname, :lname, :email, :thumbnail)
+            params.permit(:id, :fname, :lname, :email, :thumbnail)
+        end
+
+        def set_user
+            @user = User.find(params[:id])
         end
 end

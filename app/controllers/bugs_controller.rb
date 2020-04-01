@@ -1,67 +1,48 @@
 class BugsController < ApplicationController
+  before_action :set_user
+  before_action :set_user_post, only: [:show, :update, :destroy]
   before_action :set_types
 
   def index
-    @bugs = Bug.all
+    json_response(@user.bugs)
   end
 
   def show
-    @bug = Bug.find(params[:id])
-  end
-
-  def new
-    @bug = Bug.new
+    json_response(@bug)
   end
 
   def create
-    @bug = Bug.new(bug_params)
-
-    # https://cis.gvsu.edu/~kurmasz/Teaching/Courses/W20/CIS658/LectureNotes/DemoScripts/RailsDemo03.html
-    if bug_params[:user_id]
-      begin
-        user = User.find(bug_params[:user_id])
-        @bug.build_user(:id => user.id)
-      rescue
-        puts "Error creating user!"
-      end  
-    end
-
-    if @bug.save
-      redirect_to @bug
-    else
-      render 'new'
-    end
-  end
-
-  def edit
-    @bug = Bug.find(params[:id])
+    @user.bugs.create!(bug_params)
+    json_response(@user, :created)
   end
 
   def update
-    @bug = Bug.find(params[:id])
-
-    if @bug.update(bug_params)
-      redirect_to @bug
-    else
-      render 'edit'
-    end
+    @bug.update(bug_params)
+    head :no_content
   end
 
   def destroy
-    @bug = Bug.find(params[:id])
     @bug.destroy
-
-    redirect_to bugs_path
-  end
-
-  def set_types
-    @issue_types = Bug.issue_types
-    @priorities = Bug.priorities
-    @statuses = Bug.statuses
+    head :no_content
   end
   
   private
     def bug_params
-      params.require(:bug).permit(:title, :description, :issue_type, :priority, :status, :user_id)
+      params.permit(:title, :description, :issue_type, :priority, :status, :user_id)
     end
+
+    def set_user
+      @user = User.find(params[:user_id])
+    end
+
+    def set_user_post
+      @bug = @user.bugs.find_by!(id: params[:id]) if @bug
+    end
+    
+    def set_types
+      @issue_types = Bug.issue_types
+      @priorities = Bug.priorities
+      @statuses = Bug.statuses
+    end
+  
 end
