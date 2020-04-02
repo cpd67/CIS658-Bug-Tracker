@@ -16,8 +16,11 @@ class UsersController < ApplicationController
     end
 
     def update
-        @user.update(user_params)
-        head :no_content
+        if @user.update(user_params)
+            head :no_content
+        else
+            puts "An error occurred when attempting to update the user."
+        end
     end
 
     def destroy
